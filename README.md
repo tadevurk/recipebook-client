@@ -1,4 +1,4 @@
-# Vue JWT starter project
+# Recipe Book (Client, Web Dev. 2 Project)
 
 This project is meant as a starting point for a lecture about adding JWT authentication and state management to a vue app
 
