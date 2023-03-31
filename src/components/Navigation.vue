@@ -13,6 +13,21 @@
           >
         </li>
         <li class="nav-item">
+          <router-link to="/recipes" class="nav-link" active-class="active"
+            >Recipes</router-link
+          >
+        </li>
+        <li class="nav-item">
+          <router-link to="/aboutMe" class="nav-link" active-class="active"
+            >About Me</router-link
+          >
+        </li>
+        <li class="nav-item">
+          <router-link to="/contact" class="nav-link" active-class="active"
+            >Contact</router-link
+          >
+        </li>
+        <li class="nav-item">
           <router-link to="/login" class="nav-link" active-class="active"
             >Login</router-link
           >
