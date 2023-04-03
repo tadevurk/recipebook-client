@@ -1,53 +1,45 @@
 <template>
   <section>
     <div class="container">
-      <h2 class="mt-3 mt-lg-5">Recipes</h2>
-    </div>
+      <h1>My Recipes</h1>
+      <div class="form-group">
+        <label for="cuisineSelect">Filter by Cuisine:</label>
+        <select class="form-control" id="cuisineSelect" v-model="selectedCuisine">
+          <option value="">--Select a cuisine--</option>
+          <option v-for="cuisine in cuisines" :value="cuisine">{{ cuisine }}</option>
+        </select>
+      </div>
 
-    <div class="container mt-5">
-      <div class="row mt-5">
-        <div class="container mt-5">
-          <div class="row">
-            <div v-for="recipe in recipes" :key="recipe.id" class="col-md-6">
-              <div class="card mb-3" style="width: auto;">
-                <div class="card-header">
-                  <h5 class="card-title" style="color: #17a2b8;">Recipe Name: {{ recipe.name }}</h5>
-                  <p class="card-text">Cuisine: <em>{{ recipe.cuisine }}</em></p>
-                </div>
-                <div class="card-body">
-                  <div class="col-md-8">
-                    <h6 style="color: #17a2b8">Ingredients:</h6>
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th>Unit</th>
-                          <th>Quantity</th>
-                          <th>Name</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="ingredient in recipe.ingredients" :key="ingredient.id">
-                          <td>{{ ingredient.unit }}</td>
-                          <td>{{ ingredient.quantity }}</td>
-                          <td>{{ ingredient.name }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="col-md-12">
-                    <h6 style="color: #17a2b8">Instructions:</h6>
-                    <p class="card-text">{{ recipe.instructions }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="form-group">
+        <label for="recipeSearch">Search by Recipe Name:</label>
+        <input type="text" class="form-control" id="recipeSearch" v-model="searchTerm"
+          @input="getAutocompleteSuggestions" />
+        <div class="autocomplete" v-if="showAutocomplete">
+          <ul>
+            <li v-for="(suggestion, index) in autocompleteSuggestions" :key="index" @click="selectSuggestion(suggestion)">
+              {{ suggestion.name }}
+            </li>
+          </ul>
         </div>
       </div>
     </div>
 
+
+    <div class="container">
+      <h2 class="mt-3 mt-lg-5">Recipes</h2>
+      <button type="button" class="btn btn-primary mt-3" @click="this.$router.push('/createrecipe');">
+        Add recipe
+      </button>
+      <div class="row mt-3">
+        <div class="row mt-3">
+          <recipe-list-item v-for="recipe in filteredRecipes" :key="recipe.id" :recipe="recipe"
+            :ingredients="recipe.ingredients" @update="update" />
+        </div>
+      </div>
+    </div>
   </section>
 </template>
+
 
 <script>
 import axios from "axios";
@@ -62,10 +54,26 @@ export default {
   data() {
     return {
       recipes: [],
+      selectedCuisine: '',
+      searchTerm: '',
+      autocompleteSuggestions: [],
+      showAutocomplete: false,
     };
   },
   mounted() {
     this.update();
+  },
+  computed: {
+    cuisines() {
+      return [...new Set(this.recipes.map(recipe => recipe.cuisine))];
+    },
+    filteredRecipes() {
+      if (this.selectedCuisine) {
+        return this.recipes.filter(recipe => recipe.cuisine === this.selectedCuisine);
+      } else {
+        return this.recipes;
+      }
+    }
   },
   methods: {
     update() {
@@ -74,9 +82,47 @@ export default {
         .then((result) => {
           console.log(result);
           this.recipes = result.data;
+
+          // Iterate through each recipe and make a seperate get request for its ingredients
+          this.recipes.forEach((recipe => {
+            axios
+              .get(`http://localhost/recipes/${recipe.id}/ingredients`)
+              .then((result => {
+                console.log(result);
+                recipe.ingredients = result.data;
+              }))
+              .catch((error) => console.log(error));
+          }))
         })
         .catch((error) => console.log(error));
     },
+    // TODO:The search function doesn't work yet
+    getAutocompleteSuggestions() {
+      if (this.searchTerm) {
+        axios
+          .get(`http://localhost/recipes/autocomplete?name=${this.searchTerm}`)
+          .then((result) => {
+            console.log(result);
+            this.autocompleteSuggestions = result.data;
+            this.showAutocomplete = true;
+          })
+          .catch((error) => console.log(error));
+      }
+      else {
+        this.showAutocomplete = false;
+        this.autocompleteSuggestions = [];
+      }
+    },
+    selectSuggestion(suggestion) {
+      this.searchTerm = suggestion;
+      this.showAutocomplete = false;
+    }
   },
 };
 </script>
+
+<style>
+.form-group {
+  width: 40%;
+}
+</style>

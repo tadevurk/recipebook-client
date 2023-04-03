@@ -1,25 +1,29 @@
 <template>
-    <!-- <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xxl-3 p-2">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 p-2">
         <div class="card product-card h-100">
             <div class="card-body">
+                <span class="price">{{ recipe.cuisine }}</span>
+
                 <div class="float-start">
-                    <p>{{ recipe.name }}</p>
-                    <p>
-                        <small>{{ recipe.instructions }}</small>
-                    </p>
+                    <h6>{{ recipe.name }}</h6>
+                    <p>{{ recipe.instructions }}</p>
                 </div>
-                <span class="price float-end">{{ recipe.cuisine }}</span>
+
+                <div class="mt-2">
+                    <span class="font-weight-bold">Ingredients:</span>
+                    <ul>
+                        <li v-for="ingredient in recipe.ingredients" :key="ingredient.id">{{ ingredient }}</li>
+                    </ul>
+
+                </div>
             </div>
             <div class="card-footer">
                 <button class="btn btn-warning" @click="editRecipe(recipe.id)">Edit</button>&nbsp;&nbsp;
                 <button class="btn btn-danger" @click="deleteRecipe(recipe.id)">Delete</button>
             </div>
         </div>
-    </div> -->
-
+    </div>
 </template>
-
-
 
 <script>
 import axios from "axios";
@@ -27,7 +31,7 @@ import axios from "axios";
 export default {
     name: "RecipeListItem",
     props: {
-        recipe: Object,
+        recipe: Object
     },
     methods: {
         deleteRecipe(id) {
@@ -40,9 +44,14 @@ export default {
                 .catch((error) => console.log(error));
         },
         editRecipe(id) {
-            this.$router.push('/editRecipe/' + id);
+            this.$router.push('/recipes/' + id);
         }
     },
-};
+    computed: {
+        ingredients() {
+            return this.recipe.ingredients.map(ingredient => ingredient.name);
+        }
+    }
+    };
 
 </script>
