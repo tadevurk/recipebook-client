@@ -38,6 +38,14 @@
                 </li>
             </ul>
 
+            <div class="input-group mt-4">
+                <button type="button" class="btn btn-primary" @click="updateRecipe">
+                    Save changes
+                </button>
+                <button type="button" class="btn btn-danger" @click="this.$router.push('/recipes')">
+                    Cancel
+                </button>
+            </div>
 
         </div>
 

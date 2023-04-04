@@ -5,7 +5,7 @@
       <div class="form-group">
         <label for="cuisineSelect">Filter by Cuisine:</label>
         <select class="form-control" id="cuisineSelect" v-model="selectedCuisine">
-          <option value="">--Select a cuisine--</option>
+          <option value="">Select Cuisine </option>
           <option v-for="cuisine in cuisines" :value="cuisine">{{ cuisine }}</option>
         </select>
       </div>

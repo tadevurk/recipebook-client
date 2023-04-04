@@ -6,16 +6,31 @@
 
                 <div class="float-start">
                     <h6>{{ recipe.name }}</h6>
-                    <p>{{ recipe.instructions }}</p>
+                    <div class="mt-2">
+                        <span class="font-weight-bold">Ingredients:</span>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td>Quantity</td>
+                                    <td>Unit</td>
+                                    <td>Name</td>
+                                </tr>
+                            </thead>
+
+                            <tbody v-for="ingredient in recipe.ingredients" :key="ingredient.id">
+                                <tr>
+                                    <td>{{ ingredient.quantity }}</td>
+                                    <td>{{ ingredient.unit }}</td>
+                                    <td>{{ ingredient.name }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p v-html="recipe.instructions.replace(/(?:\r\n|\r|\n)/g, '<br>')"></p>
+
                 </div>
 
-                <div class="mt-2">
-                    <span class="font-weight-bold">Ingredients:</span>
-                    <ul>
-                        <li v-for="ingredient in recipe.ingredients" :key="ingredient.id">{{ ingredient }}</li>
-                    </ul>
 
-                </div>
             </div>
             <div class="card-footer">
                 <button class="btn btn-warning" @click="editRecipe(recipe.id)">Edit</button>&nbsp;&nbsp;
@@ -49,9 +64,17 @@ export default {
     },
     computed: {
         ingredients() {
-            return this.recipe.ingredients.map(ingredient => ingredient.name);
+            return this.recipe.ingredients.map(ingredient => {
+                return {
+                    id: ingredient.id,
+                    name: ingredient.name,
+                    quantity: ingredient.quantity,
+                    unit: ingredient.unit
+                };
+            });
         }
     }
-    };
+
+};
 
 </script>

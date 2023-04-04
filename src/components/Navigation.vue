@@ -3,34 +3,26 @@
     <div class="container-fluid">
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
         <li class="nav-item">
-          <router-link to="/" class="nav-link" active-class="active"
-            >Home</router-link
-          >
-        </li>      
-        <li class="nav-item">
-          <router-link to="/products" class="nav-link" active-class="active"
-            >Products</router-link
-          >
+          <router-link to="/" class="nav-link" active-class="active">Home</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/recipes" class="nav-link" active-class="active"
-            >Recipes</router-link
-          >
+          <router-link to="/products" class="nav-link" active-class="active">Products</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/aboutMe" class="nav-link" active-class="active"
-            >About Me</router-link
-          >
+          <router-link to="/recipes" class="nav-link" active-class="active">Recipes</router-link>
+        </li>
+
+        <li class="nav-item">
+          <router-link to="/users" class="nav-link" active-class="active">Users</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/contact" class="nav-link" active-class="active"
-            >Contact</router-link
-          >
+          <router-link to="/aboutMe" class="nav-link" active-class="active">About Me</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/login" class="nav-link" active-class="active"
-            >Login</router-link
-          >
+          <router-link to="/contact" class="nav-link" active-class="active">Contact</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
         </li>
       </ul>
     </div>
@@ -43,5 +35,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
