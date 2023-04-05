@@ -70,41 +70,32 @@
 </template>
 
 <script>
+import { useUserStore } from "../stores/usersession";
+
 export default {
+  setup() {
+    return {
+      store: useUserStore()
+    }
+  },
+  name: "Login",
   data() {
     return {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
+      errorMessage: ""
     };
   },
   methods: {
-    async login() {
-      try {
-        const response = await fetch('http://localhost/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: this.username,
-            password: this.password,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-
-        const data = await response.json();
-
-        // handle successful login
-
-        this.$router.push('/recipes');
-      } catch (error) {
-        alert('Login failed');
-      }
-    },
-  },
+    login() {
+      this.store.login(this.username, this.password)
+        .then(() => {
+          this.$router.push('/recipes');
+        })
+        .catch((error) => alert(error));
+        // .catch((error) => this.errorMessage = error);
+    }
+  }
 };
 </script>
 

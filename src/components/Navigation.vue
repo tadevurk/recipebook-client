@@ -18,6 +18,15 @@
         <li class="nav-item">
           <router-link to="/contact" class="nav-link" active-class="active">Contact</router-link>
         </li>
+        <li>
+          <router-link to="/login" class="nav-link" active-class="active" @click="this.store.logout()"
+            v-if="this.store.isAuthenticated">Logout</router-link>
+        </li>
+        <li>
+          <router-link to="/login" class="nav-link" active-class="active"
+            v-if="!this.store.isAuthenticated">Login</router-link>
+        </li>
+
 
       </ul>
     </div>
@@ -25,13 +34,14 @@
 </template>
 
 <script>
+import { useUserStore } from '../stores/usersession'
+
 export default {
   name: "Navigation",
-  methods: {
-    isLoggedIn() {
-      const token = localStorage.getItem('token');
-      return token !== null;
-    },
+  setup() {
+    return {
+      store: useUserStore(),
+    };
   },
 };
 </script>

@@ -86,7 +86,6 @@ export default {
       axios
         .get("http://localhost/recipes")
         .then((result) => {
-          console.log(result);
           this.recipes = result.data;
 
           // Iterate through each recipe and make a seperate get request for its ingredients
