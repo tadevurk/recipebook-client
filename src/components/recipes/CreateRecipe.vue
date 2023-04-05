@@ -18,15 +18,15 @@
                     <input type="text" class="input" placeholder="Instruction" v-model="recipe.instructions" />
                 </div>
 
-                <!-- input field for ingredient name, unit, quantity -->
-                <div class="input-group">
-                    <label class="label">Ingredients</label>
-                    <input type="text" class="input" placeholder="Ingredient name" v-model="recipe.ingredients.name" />
-                    <input type="text" class="input" placeholder="Ingredient unit" v-model="recipe.ingredients.unit" />
-                    <input type="text" class="input" placeholder="Ingredient quantity"
-                        v-model="recipe.ingredients.quantity" />
+                <div v-for="(ingredient, index) in recipe.ingredients" :key="index">
+                    <input type="text" class="input" placeholder="Ingredient name" v-model="ingredient.name" />
+                    <input type="text" class="input" placeholder="Ingredient unit" v-model="ingredient.unit" />
+                    <input type="text" class="input" placeholder="Ingredient quantity" v-model="ingredient.quantity" />
                 </div>
 
+                <button type="button" class="btn btn-primary" @click="addIngredient">
+                    Add ingredient
+                </button>
 
                 <div class="input-group mt-4">
                     <button type="button" class="btn btn-primary" @click="addRecipe">
@@ -36,6 +36,7 @@
                         Cancel
                     </button>
                 </div>
+
             </form>
         </div>
     </section>
@@ -43,25 +44,41 @@
 
 <script>
 import axios from "axios";
+import { useUserStore } from '../../stores/usersession'
 
 export default {
     name: "CreateRecipe",
+    setup() {
+        return {
+            store: useUserStore(),
+        };
+    },
     data() {
         return {
             recipe: {
                 name: "",
                 cuisine: "",
                 instructions: "",
-                ingredients:[]
+                ingredients: [
+                ]
             }
         };
     },
     methods: {
+        addIngredient() {
+            this.recipe.ingredients.push({
+                name: "",
+                unit: "",
+                quantity: ""
+            });
+        },
         addRecipe() {
             axios
-                .post("http://localhost/recipes", this.recipe)
+                .post("http://localhost/recipes", {
+                    ...this.recipe,
+                    user_id: this.store.userId
+                })
                 .then(response => {
-                    console.log(response.data);
                     this.$refs.form.reset();
                     this.$router.push('/recipes');
                 })

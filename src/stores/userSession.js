@@ -5,6 +5,7 @@ export const useUserStore = defineStore('userSession', {
     state: () => ({
         jwt: '',
         username: '',
+        userId: '',
         role: 0
     }),
     getters: {
@@ -28,11 +29,13 @@ export const useUserStore = defineStore('userSession', {
                     this.jwt = result.data.token.jwt;
                     this.username = result.data.user.username;
                     this.role = result.data.user.role;
+                    this.userId = result.data.user.id;
 
                     // These two lines are the same:
                     localStorage["jwt"] = this.jwt;
                     localStorage.setItem("username", this.username);
                     localStorage.setItem("role", this.role);
+                    localStorage.setItem("userId", this.userId);
 
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.jwt;
                     resolve();
@@ -48,6 +51,7 @@ export const useUserStore = defineStore('userSession', {
             localStorage.removeItem("jwt");
             localStorage.removeItem("username");
             localStorage.removeItem("role");
+            localStorage.removeItem("userId");
             axios.defaults.headers.common['Authorization'] = '';
         }
     }
