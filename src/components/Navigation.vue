@@ -6,9 +6,6 @@
           <router-link to="/" class="nav-link" active-class="active">Home</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/products" class="nav-link" active-class="active">Products</router-link>
-        </li>
-        <li class="nav-item">
           <router-link to="/recipes" class="nav-link" active-class="active">Recipes</router-link>
         </li>
 
@@ -21,9 +18,7 @@
         <li class="nav-item">
           <router-link to="/contact" class="nav-link" active-class="active">Contact</router-link>
         </li>
-        <li class="nav-item">
-          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
-        </li>
+
       </ul>
     </div>
   </nav>
@@ -32,6 +27,12 @@
 <script>
 export default {
   name: "Navigation",
+  methods: {
+    isLoggedIn() {
+      const token = localStorage.getItem('token');
+      return token !== null;
+    },
+  },
 };
 </script>
 
