@@ -32,7 +32,7 @@
 
 
             </div>
-            <div class="card-footer">
+            <div class="card-footer" v-if="this.store.isAuthenticated">
                 <button class="btn btn-warning" @click="editRecipe(recipe.id)">Edit</button>&nbsp;&nbsp;
                 <button class="btn btn-danger" @click="deleteRecipe(recipe.id)">Delete</button>
             </div>
@@ -42,11 +42,17 @@
 
 <script>
 import axios from "axios";
+import { useUserStore } from "../../stores/usersession";
 
 export default {
     name: "RecipeListItem",
     props: {
         recipe: Object
+    },
+    setup() {
+        return {
+            store: useUserStore(),
+        };
     },
     methods: {
         deleteRecipe(id) {
