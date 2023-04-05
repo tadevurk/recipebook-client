@@ -1,3 +1,22 @@
+<!-- <template>
+  <div>
+    <h2>Login</h2>
+    <form @submit.prevent="login">
+      <div>
+        <label for="username">Username:</label>
+        <input type="text" name="username" v-model="username">
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" name="password" v-model="password">
+      </div>
+      <div>
+        <button type="submit">Login</button>
+      </div>
+    </form>
+  </div>
+</template> -->
+
 <template>
   <section class="h-100 gradient-form" style="background-color: #eee;">
     <div class="container py-5 h-100">
@@ -16,14 +35,14 @@
                   <form method="post" action="checkLogin">
                     <p>Please login to your editor/admin account</p>
                     <div class="form-outline mb-4">
-                      <label for="inputUsername" class="form-label">Username</label>
-                      <input id="inputUsername" type="text" class="form-control" />
+                      <label for="username" class="form-label">Username:</label>
+                      <input type="text" name="username" class="form-control" v-model="username">
                     </div>
                     <div class="form-outline mb-4">
-                      <label for="inputPassword" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="inputPassword" />
+                      <label for="password" class="form-label">Password:</label>
+                      <input type="password" name="password" class="form-control" v-model="password">
                     </div>
-                    <button type='button' class="btn btn-primary">Login</button>
+                    <button type='button' class="btn btn-primary" @click="login()">Login</button>
 
                   </form>
                 </div>
@@ -52,18 +71,43 @@
 
 <script>
 export default {
-  name: "Login",
   data() {
     return {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     };
   },
   methods: {
+    async login() {
+      try {
+        const response = await fetch('http://localhost/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: this.username,
+            password: this.password,
+          }),
+        });
 
-  }
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+
+        const data = await response.json();
+
+        // handle successful login
+
+        this.$router.push('/recipes');
+      } catch (error) {
+        alert('Login failed');
+      }
+    },
+  },
 };
 </script>
+
 
 <style>
 .gradient-custom-2 {
