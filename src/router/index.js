@@ -16,7 +16,7 @@ const router = createRouter({
     { path: '/recipes', component: RecipeList },
     { path: '/users', component: UserList },
     { path: '/login', component: Login },
-    { path: '/createrecipe', component: CreateRecipe, props: true},
+    { path: '/createrecipe', component: CreateRecipe, props: true },
     { path: '/recipes/:id', component: EditRecipe, props: true },
     { path: '/users/:id', component: UpdateUser, props: true },
     { path: '/auth/register', component: RegisterUser, props: true }
