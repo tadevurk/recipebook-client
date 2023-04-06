@@ -6,10 +6,6 @@
           <router-link to="/" class="nav-link" active-class="active">Home</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/recipes" class="nav-link" active-class="active">Recipes</router-link>
-        </li>
-
-        <li class="nav-item">
           <router-link to="/users" class="nav-link" active-class="active" v-if="this.store.isAuthenticated && this.store.role == 2">Users</router-link>
         </li>
         <li class="nav-item">

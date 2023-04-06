@@ -1,22 +1,3 @@
-<!-- <template>
-  <div>
-    <h2>Login</h2>
-    <form @submit.prevent="login">
-      <div>
-        <label for="username">Username:</label>
-        <input type="text" name="username" v-model="username">
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" name="password" v-model="password">
-      </div>
-      <div>
-        <button type="submit">Login</button>
-      </div>
-    </form>
-  </div>
-</template> -->
-
 <template>
   <section class="h-100 gradient-form" style="background-color: #eee;">
     <div class="container py-5 h-100">
@@ -90,10 +71,9 @@ export default {
     login() {
       this.store.login(this.username, this.password)
         .then(() => {
-          this.$router.push('/recipes');
+          this.$router.push('/');
         })
         .catch((error) => alert(error));
-        // .catch((error) => this.errorMessage = error);
     }
   }
 };
