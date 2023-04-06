@@ -76,7 +76,7 @@ export default {
                 .then((res) => {
                     console.log(res.data);
                     this.$refs.form.reset();
-                    this.$router.push("/recipes");
+                    this.$router.push("/");
 
                 })
                 .catch((error) => console.log(error));

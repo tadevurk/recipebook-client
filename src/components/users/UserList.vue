@@ -1,9 +1,9 @@
 <template>
     <h1 class="text-center mt-3">Manage Editors</h1>
+    <UserListItem v-for="user in users" :key="user.id" :user="user" @update="update" />
     <button type="button" class="btn btn-primary mt-3" @click="this.$router.push('/auth/register');">
         Register User
     </button>
-    <UserListItem v-for="user in users" :key="user.id" :user="user" @update="update" />
 </template>
 
 <script>

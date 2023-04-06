@@ -1,5 +1,10 @@
 <template>
   <section>
+
+    <div class="header-image" style="width: 100%; display: block; margin-bottom: 35px;">
+      <img src="../images/recipe3.png" alt="Homemade Recipe Picture" style="width: 100%; height: auto;">
+    </div>
+
     <div class="container">
       <h1>Homemade Recipes</h1>
       <div class="form-group row">
@@ -114,7 +119,7 @@ export default {
         .catch((error) => console.log(error));
     },
     getAutocompleteSuggestions() {
-      if (this.searchTerm.length <1) {
+      if (this.searchTerm.length < 1) {
         this.showAutocomplete = false;
         return;
       }
@@ -147,4 +152,5 @@ export default {
 .form-group {
   width: 40%;
 }
+
 </style>

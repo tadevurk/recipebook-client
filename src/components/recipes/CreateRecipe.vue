@@ -13,9 +13,9 @@
                     <input type="text" class="form-control" placeholder="Cuisine" v-model="recipe.cuisine" />
                 </div>
 
-                <div class="form-group">
-                    <label class="label">Description</label>
-                    <input type="text" class="form-control" placeholder="Instruction" v-model="recipe.instructions" />
+                <div class="form-group" style="padding-top: 1%;">
+                    <label class="label">Instruction</label>
+                    <textarea type="text" style="height: 200px; vertical-align: top;" class="form-control" placeholder="Instruction.." v-model="recipe.instructions" />
                 </div>
 
                 <div>
@@ -52,7 +52,7 @@
                     <button type="button" class="btn btn-outline-success" @click="addRecipe">
                         Create recipe
                     </button>
-                    <button type="button" class="btn btn-outline-danger" @click="this.$router.push('/recipes')">
+                    <button type="button" class="btn btn-outline-danger" @click="this.$router.push('/')">
                         Cancel
                     </button>
                 </div>
@@ -128,7 +128,7 @@ export default {
                 .then(response => {
                     console.log(response);
                     this.$refs.form.reset();
-                    this.$router.push('/recipes');
+                    this.$router.push('/');
                 })
                 .catch(error => {
                     console.log(error);

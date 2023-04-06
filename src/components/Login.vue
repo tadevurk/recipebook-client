@@ -38,7 +38,7 @@
                     Sign in to your account and start managing our recipe collection today!
                   </p>
                   <div class="text-center mt-3">
-                    <a href="recipes" class="btn btn-outline-secondary">Go to Homepage</a>
+                    <a href="/" class="btn btn-outline-secondary">Go to Homepage</a>
                   </div>
                 </div>
               </div>
