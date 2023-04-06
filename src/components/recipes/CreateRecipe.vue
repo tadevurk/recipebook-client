@@ -18,10 +18,22 @@
                     <input type="text" class="input" placeholder="Instruction" v-model="recipe.instructions" />
                 </div>
 
-                <div v-for="(ingredient, index) in recipe.ingredients" :key="index">
-                    <input type="text" class="input" placeholder="Ingredient name" v-model="ingredient.name" />
-                    <input type="text" class="input" placeholder="Ingredient unit" v-model="ingredient.unit" />
-                    <input type="text" class="input" placeholder="Ingredient quantity" v-model="ingredient.quantity" />
+                <div>
+                    <div v-for="(ingredient, index) in recipe.ingredients" :key="index">
+                        <input type="text" class="input" placeholder="Ingredient name" v-model="ingredient.name"
+                            @input="getAutocompleteSuggestions(ingredient, index)" />
+                        <input type="text" class="input" placeholder="Ingredient unit" v-model="ingredient.unit" />
+                        <input type="text" class="input" placeholder="Ingredient quantity" v-model="ingredient.quantity" />
+
+                        <div class="autocomplete" v-if="showAutocomplete[index]">
+                            <ul>
+                                <li v-for="(suggestion, i) in autocompleteSuggestions[index]" :key="i"
+                                    @click="selectSuggestion(suggestion, ingredient, index)">
+                                    {{ suggestion.name }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <button type="button" class="btn btn-primary" @click="addIngredient">
@@ -59,9 +71,10 @@ export default {
                 name: "",
                 cuisine: "",
                 instructions: "",
-                ingredients: [
-                ]
-            }
+                ingredients: []
+            },
+            autocompleteSuggestions: [],
+            showAutocomplete: [],
         };
     },
     methods: {
@@ -71,7 +84,32 @@ export default {
                 unit: "",
                 quantity: ""
             });
+            this.showAutocomplete.push(false);
         },
+        getAutocompleteSuggestions(ingredient, index) {
+            if (ingredient.name.length < 1) {
+                this.showAutocomplete[index] = false;
+                return;
+            }
+
+            axios
+                .post("http://localhost/ingredients", {
+                    name: ingredient.name
+                })
+                .then((result) => {
+                    console.log(result);
+                    this.autocompleteSuggestions[index] = result.data;
+                    this.showAutocomplete[index] = true;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        selectSuggestion(suggestion, ingredient, index) {
+            ingredient.name = suggestion.name;
+            this.showAutocomplete[index] = false;
+        },
+
         addRecipe() {
             axios
                 .post("http://localhost/recipes", {
@@ -79,6 +117,7 @@ export default {
                     user_id: this.store.userId
                 })
                 .then(response => {
+                    console.log(response);
                     this.$refs.form.reset();
                     this.$router.push('/recipes');
                 })
