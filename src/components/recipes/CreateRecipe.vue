@@ -1,37 +1,45 @@
 <template>
     <section class="section">
-        <div class="container">
+        <div class="container mt-5">
             <h1 class="title">Create a new recipe</h1>
             <form ref="form">
-                <div class="input-group">
+                <div class="form-group">
                     <label class="label">Name</label>
-                    <input type="text" class="input" placeholder="Name" v-model="recipe.name" />
+                    <input type="text" class="form-control" placeholder="Name" v-model="recipe.name" />
                 </div>
 
-                <div class="input-group">
+                <div class="form-group">
                     <label class="label">Cuisine</label>
-                    <input type="text" class="input" placeholder="Cuisine" v-model="recipe.cuisine" />
+                    <input type="text" class="form-control" placeholder="Cuisine" v-model="recipe.cuisine" />
                 </div>
 
-                <div class="input-group">
+                <div class="form-group">
                     <label class="label">Description</label>
-                    <input type="text" class="input" placeholder="Instruction" v-model="recipe.instructions" />
+                    <input type="text" class="form-control" placeholder="Instruction" v-model="recipe.instructions" />
                 </div>
 
                 <div>
-                    <div v-for="(ingredient, index) in recipe.ingredients" :key="index">
-                        <input type="text" class="input" placeholder="Ingredient name" v-model="ingredient.name"
-                            @input="getAutocompleteSuggestions(ingredient, index)" />
-                        <input type="text" class="input" placeholder="Ingredient unit" v-model="ingredient.unit" />
-                        <input type="text" class="input" placeholder="Ingredient quantity" v-model="ingredient.quantity" />
+                    <label class="label">Ingredient</label>
 
-                        <div class="autocomplete" v-if="showAutocomplete[index]">
-                            <ul>
-                                <li v-for="(suggestion, i) in autocompleteSuggestions[index]" :key="i"
-                                    @click="selectSuggestion(suggestion, ingredient, index)">
-                                    {{ suggestion.name }}
-                                </li>
-                            </ul>
+                    <div class="input-group">
+
+
+                        <div v-for="(ingredient, index) in recipe.ingredients" :key="index">
+                            <input type="text" class="form-control" placeholder="Ingredient name" v-model="ingredient.name"
+                                @input="getAutocompleteSuggestions(ingredient, index)" />
+                            <div class="autocomplete" v-if="showAutocomplete[index]">
+                                <ul>
+                                    <li v-for="(suggestion, i) in autocompleteSuggestions[index]" :key="i"
+                                        @click="selectSuggestion(suggestion, ingredient, index)">
+                                        {{ suggestion.name }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Ingredient unit"
+                                v-model="ingredient.unit" />
+                            <input type="text" class="form-control" placeholder="Ingredient quantity"
+                                v-model="ingredient.quantity" />
+
                         </div>
                     </div>
                 </div>
@@ -41,10 +49,10 @@
                 </button>
 
                 <div class="input-group mt-4">
-                    <button type="button" class="btn btn-primary" @click="addRecipe">
+                    <button type="button" class="btn btn-outline-success" @click="addRecipe">
                         Create recipe
                     </button>
-                    <button type="button" class="btn btn-danger" @click="this.$router.push('/recipes')">
+                    <button type="button" class="btn btn-outline-danger" @click="this.$router.push('/recipes')">
                         Cancel
                     </button>
                 </div>
@@ -71,7 +79,8 @@ export default {
                 name: "",
                 cuisine: "",
                 instructions: "",
-                ingredients: []
+                ingredients: [
+                ]
             },
             autocompleteSuggestions: [],
             showAutocomplete: [],

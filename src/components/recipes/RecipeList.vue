@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <section>
     <div class="container">
       <h1>Homemade Recipes</h1>
@@ -10,29 +10,81 @@
         </select>
       </div>
 
-      <div class="form-group">
-        <label for="recipeSearch">Search by Recipe Name:</label>
-        <div class="input-group">
-          <input type="text" class="form-control" id="recipeSearch" v-model="searchTerm"
-            @input="getAutocompleteSuggestions" />
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" @click="searchByRecipeName()">Search</button>
+      <div class="form-group row">
+        <label for="recipeSearch" class="col-sm-3 col-form-label">Search by Recipe Name:</label>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <input type="text" class="form-control" id="recipeSearch" v-model="searchTerm"
+              @input="getAutocompleteSuggestions" />
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" @click="searchByRecipeName()">Search</button>
+            </div>
           </div>
-        </div>
-        <div class="autocomplete" v-if="showAutocomplete">
-          <ul>
-            <li v-for="(suggestion, index) in autocompleteSuggestions" :key="index" @click="selectSuggestion(suggestion)">
-              {{ suggestion.name }}
-            </li>
-          </ul>
+          <div class="autocomplete mt-2" v-if="showAutocomplete">
+            <ul>
+              <li v-for="(suggestion, index) in autocompleteSuggestions" :key="index"
+                @click="selectSuggestion(suggestion)">
+                {{ suggestion.name }}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
+      <div class="container">
+        <button type="button" v-if="this.store.isAuthenticated" class="btn btn-primary mt-3"
+          @click="this.$router.push('/createrecipe');">
+          Add recipe
+        </button>
+        <div class="row mt-3">
+          <div class="row mt-3">
+            <recipe-list-item v-for="recipe in filteredRecipes" :key="recipe.id" :recipe="recipe"
+              :ingredients="recipe.ingredients" @update="update" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template> -->
 
+<template>
+  <section>
+    <div class="container">
+      <h1>Homemade Recipes</h1>
+      <div class="form-group row">
+        <label for="cuisineSelect" class="col-sm-3 col-form-label">Filter by Cuisine:</label>
+        <div class="col-sm-9">
+          <select class="form-control" id="cuisineSelect" v-model="selectedCuisine">
+            <option value="">Select Cuisine </option>
+            <option v-for="cuisine in cuisines" :value="cuisine">{{ cuisine }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="recipeSearch" class="col-sm-3 col-form-label">Search by Recipe Name:</label>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <input type="text" class="form-control" id="recipeSearch" v-model="searchTerm"
+              @input="getAutocompleteSuggestions" />
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" @click="searchByRecipeName()">Search</button>
+            </div>
+          </div>
+          <div class="autocomplete mt-2" v-if="showAutocomplete">
+            <ul>
+              <li v-for="(suggestion, index) in autocompleteSuggestions" :key="index"
+                @click="selectSuggestion(suggestion)">
+                {{ suggestion.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       <div class="container">
-        <h2 class="mt-3 mt-lg-5">Recipes</h2>
-        <button type="button" class="btn btn-primary mt-3" @click="this.$router.push('/createrecipe');">
+        <button type="button" v-if="this.store.isAuthenticated" class="btn btn-primary mt-3"
+          @click="this.$router.push('/createrecipe');">
           Add recipe
         </button>
         <div class="row mt-3">
@@ -47,15 +99,24 @@
 </template>
 
 
+
 <script>
 import axios from "axios";
 
 import RecipeListItem from "./RecipeListItem.vue";
 
+import { useUserStore } from "../../stores/usersession";
+
+
 export default {
   name: "RecipeList",
   components: {
     RecipeListItem,
+  },
+  setup() {
+    return {
+      store: useUserStore(),
+    };
   },
   data() {
     return {
