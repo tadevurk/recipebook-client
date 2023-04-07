@@ -10,12 +10,15 @@ export const useUserStore = defineStore('userSession', {
     }),
     getters: {
         isAuthenticated: (state) => state.jwt !== ''
-    },
+},
     actions: {
         localLogin() {
             if (localStorage["jwt"]) {
                 this.jwt = localStorage["jwt"];
                 this.username = localStorage["username"];
+                this.userId = localStorage["userId"];
+                this.role = localStorage["role"];
+
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.jwt;
                 console.log("Logged in automatically");
             }
@@ -48,9 +51,12 @@ export const useUserStore = defineStore('userSession', {
         logout(){
             this.jwt = '';
             this.username = '';
+            this.role = 0;
+            this.userId = '';
             localStorage.removeItem("jwt");
             localStorage.removeItem("username");
             localStorage.removeItem("role");
+
             localStorage.removeItem("userId");
             axios.defaults.headers.common['Authorization'] = '';
         }

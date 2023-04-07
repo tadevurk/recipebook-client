@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { useUserStore } from "../stores/usersession";
+import { useUserStore } from "../stores/userSession";
 
 export default {
   setup() {
